@@ -10,7 +10,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", get_random_secret_key())
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".onrender.com"]
 if "RENDER_EXTERNAL_HOSTNAME" in os.environ:
     ALLOWED_HOSTS.append(os.environ["RENDER_EXTERNAL_HOSTNAME"])
 
@@ -79,15 +79,10 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-# Tell Django to copy statics to the `staticfiles` directory
-# in your application directory on Render.
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Turn on WhiteNoise storage backend that takes care of compressing static files
-# and creating unique names for each version so they can safely be cached forever.
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# STATICFILES_DIRS removed as per production requirements
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
