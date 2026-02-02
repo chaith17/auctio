@@ -1,0 +1,167 @@
+{% extends 'auctions/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="vendue-wrapper min-h-[60vh] flex items-start justify-center">
+  <div class="w-full max-w-xl glass-card p-8 mt-6 rounded-xl">
+    <h2 class="text-3xl font-extrabold text-center mb-6"
+style="font-family:sans-serif; text-transform:lowercase; text-shadow:0 0 8px rgba(255,255,255,0.6);">
+  create an auction
+</h2>
+
+
+    {% if form.non_field_errors %}
+      <div class="mb-4 text-sm text-red-300">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+
+      <!-- TITLE -->
+      <div class="mb-4">
+        <label for="id_title" class="block text-sm font-medium mb-2">Title</label>
+        <input
+          id="id_title"
+          name="title"
+          type="text"
+          value="{{ form.title.value|default_if_none:'' }}"
+          placeholder="Title of your auction"
+          class="w-full rounded-md p-3 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] text-gray-100 focus:outline-none"
+        />
+        {% if form.title.errors %}
+          <p class="text-red-300 text-sm mt-1">{{ form.title.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="mb-4">
+        <label for="id_description" class="block text-sm font-medium mb-2">Description</label>
+        <textarea
+          id="id_description"
+          name="description"
+          rows="4"
+          placeholder="Describe your item (condition, history, special notes...)"
+          class="w-full rounded-md p-3 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] text-gray-100 resize-vertical"
+        >{{ form.description.value|default_if_none:'' }}</textarea>
+        {% if form.description.errors %}
+          <p class="text-red-300 text-sm mt-1">{{ form.description.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- PRICE & DURATION -->
+      <div class="grid grid-cols-12 gap-4 mt-2 mb-4">
+        <div class="col-span-8">
+          <label for="id_base_price" class="block text-sm font-medium mb-2">Starting Bid (₹)</label>
+          <input
+            id="id_base_price"
+            name="base_price"
+            type="number"
+            step="0.01"
+            value="{{ form.base_price.value|default_if_none:'' }}"
+            placeholder="Base Price (₹)"
+            class="w-full rounded-md p-3 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] text-gray-100"
+          />
+          {% if form.base_price.errors %}
+            <p class="text-red-300 text-sm mt-1">{{ form.base_price.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="col-span-4">
+          <label for="id_duration_minutes" class="block text-sm font-medium mb-2">Duration (minutes)</label>
+          <input
+            id="id_duration_minutes"
+            name="duration_minutes"
+            type="number"
+            min="1"
+            value="{{ form.duration_minutes.value|default_if_none:'60' }}"
+            placeholder="60"
+            class="w-full rounded-md p-3 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] text-gray-100"
+          />
+          {% if form.duration_minutes.errors %}
+            <p class="text-red-300 text-sm mt-1">{{ form.duration_minutes.errors.0 }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- CATEGORY -->
+      <div class="mb-4">
+        <label for="id_category" class="block text-sm font-medium mb-2">Category</label>
+        <select
+          id="id_category"
+          name="category"
+          class="w-full rounded-md p-3 bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] text-gray-100"
+        >
+          {% comment %} Provide options - change these as you want in the view or model choices {% endcomment %}
+          {% with selected=form.category.value|default_if_none:"Other" %}
+            <option value="Other" {% if selected == "Other" %}selected{% endif %}>Other</option>
+            <option value="Art" {% if selected == "Art" %}selected{% endif %}>Art</option>
+            <option value="Electronics" {% if selected == "Electronics" %}selected{% endif %}>Electronics</option>
+            <option value="Furniture" {% if selected == "Furniture" %}selected{% endif %}>Furniture</option>
+            <option value="Collectible" {% if selected == "Collectible" %}selected{% endif %}>Collectible</option>
+          {% endwith %}
+        </select>
+        {% if form.category.errors %}
+          <p class="text-red-300 text-sm mt-1">{{ form.category.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- ATTACHMENT -->
+      <div class="mb-6">
+        <label class="block text-sm font-medium mb-2">Attachment</label>
+        <div class="flex items-center gap-4">
+          <label for="id_attachment" id="attachment-chooser" class="inline-flex items-center px-3 py-2 rounded-md bg-[rgba(255,255,255,0.06)] border border-[rgba(255,255,255,0.08)] cursor-pointer select-none">
+            Select
+          </label>
+          <span id="file-name" class="text-sm text-gray-200">
+            {% if form.attachment.value %}
+              {{ form.attachment.value }}
+            {% else %}
+              No file chosen
+            {% endif %}
+          </span>
+        </div>
+        <input id="id_attachment" type="file" name="attachment" class="hidden" />
+        {% if form.attachment.errors %}
+          <p class="text-red-300 text-sm mt-1">{{ form.attachment.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="mt-2">
+        <button type="submit" class="w-full py-3 rounded-lg bg-gradient-to-r from-[#8b5cf6] to-[#a855f7] text-white font-bold tracking-wider"
+style="font-family:'Bebas Neue', sans-serif;">
+  MAKE VENDUE
+</button>
+
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- JS: wire select button to input & show filename -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('id_attachment');
+    const chooser = document.getElementById('attachment-chooser');
+    const filename = document.getElementById('file-name');
+
+    if (chooser && input) {
+      chooser.addEventListener('click', function(e) {
+        e.preventDefault();
+        input.click();
+      });
+
+      input.addEventListener('change', function() {
+        if (input.files && input.files.length > 0) {
+          filename.textContent = input.files[0].name;
+        } else {
+          filename.textContent = 'No file chosen';
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

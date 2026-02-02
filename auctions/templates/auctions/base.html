@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>auctio</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,400;1,400&display=swap"
+        rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --purple-dark: #6b21a8;
+            --accent-start: #8b5cf6;
+            --accent-end: #a855f7;
+        }
+
+        /* ------------------ HERO BACKGROUND ------------------ */
+        body {
+            background:
+                radial-gradient(800px 600px at 10% 15%, rgba(139, 92, 246, 0.12) 0%, transparent 20%),
+                radial-gradient(1000px 700px at 90% 85%, rgba(168, 85, 247, 0.08) 0%, transparent 25%),
+                linear-gradient(180deg, #0b0520 0%, #0f0b1a 40%, #090613 100%);
+            min-height: 100vh;
+            margin: 0;
+            color: #eaf1ff;
+            font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        /* ------------------ BRAND LOGO ------------------ */
+        .brand-glow {
+            color: white;
+            font-weight: 900;
+            text-shadow:
+                0 6px 18px rgba(168, 85, 247, 0.45),
+                0 16px 40px rgba(139, 92, 246, 0.35),
+                0 28px 70px rgba(107, 33, 168, 0.25);
+        }
+
+        /* ------------------ NAVBAR ------------------ */
+        .site-nav {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+
+        .site-nav-center {
+            display: flex;
+            justify-content: center;
+            gap: 2.4rem;
+            align-items: center;
+            font-family: "Bebas Neue", cursive;
+            letter-spacing: 0.06em;
+        }
+
+        .nav-item {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.25rem;
+            position: relative;
+            top: 2px;
+            /* alignment fix */
+            transition: color .25s ease, text-shadow .25s ease;
+            text-decoration: none;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--purple-dark) !important;
+            text-shadow: 0 0 10px rgba(107, 33, 168, 0.55);
+        }
+
+        a.nav-item:focus {
+            outline: 2px solid rgba(139, 92, 246, 0.18);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        /* ------------------ ACCOUNT ICON ------------------ */
+        .fa-user-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.48);
+            position: relative;
+            top: 1px;
+            /* alignment */
+            transition: .2s ease-in-out;
+        }
+
+        .fa-user-wrapper:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .fa-user-wrapper i {
+            font-size: 19px;
+            color: white;
+        }
+
+        /* ------------------ GLASS CARD ------------------ */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border-radius: 18px;
+        }
+
+        .site-container {
+            max-width: 1140px;
+            margin: auto;
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+
+        /* Footer */
+        footer.site-footer {
+            padding: 2.4rem 0;
+            text-align: center;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.62);
+        }
+
+        .landing-about {
+            padding: 3rem 1rem;
+        }
+
+        /* ------------------ GLASS CONTAINER ------------------ */
+        .glass-form-container {
+            background: linear-gradient(rgba(255, 255, 255, 0.10),
+                    rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        /* ------------------ PREMIUM GLASS INPUTS ------------------ */
+        .glass-input,
+        input.glass-input,
+        textarea.glass-input,
+        select.glass-input,
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"],
+        input[type="file"] {
+            background: rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            color: white !important;
+            outline: none;
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            padding: 14px 18px;
+            height: auto;
+        }
+
+        .glass-input:focus,
+        input.glass-input:focus,
+        textarea.glass-input:focus,
+        select.glass-input:focus,
+        input:focus {
+            box-shadow: 0 0 0 2px rgba(150, 80, 255, 0.35);
+            border-color: rgba(168, 85, 247, 0.8) !important;
+            background: rgba(255, 255, 255, 0.16) !important;
+        }
+
+        .glass-input::placeholder,
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
+            font-weight: 400;
+            font-size: 0.85rem;
+            /* Reduced to fit */
+            letter-spacing: 0.02em;
+            /* Slight spacing */
+        }
+
+        /* File Input Styling */
+        input[type="file"] {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        input[type="file"]::file-selector-button {
+            margin-right: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ------------------ BUTTONS ------------------ */
+        .glass-button {
+            background: linear-gradient(to right, #8b5cf6, #a855f7);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .glass-button:hover {
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.45);
+            transform: translateY(-1px);
+        }
+
+        /* ------------------ UTILITIES ------------------ */
+        .font-bebas {
+            font-family: "Bebas Neue", cursive;
+        }
+
+        /* ------------------ FORM LAYOUTS ------------------ */
+        .password-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            /* Equal horizontal gap */
+            align-items: start;
+        }
+
+        /* Input Sizing Consistency */
+        .glass-input {
+            width: 100%;
+            height: 52px;
+            /* Fixed identical height */
+            /* Ensure resizing matches */
+            box-sizing: border-box;
+        }
+
+        /* Custom File Input Text */
+        .custom-file-input {
+            color: transparent;
+            /* Hide "No file chosen" */
+            width: 100%;
+            position: relative;
+        }
+
+        .custom-file-input::after {
+            content: "Profile";
+            color: rgba(255, 255, 255, 0.55);
+            /* Position it where the text usually is */
+            position: absolute;
+            right: 18px;
+            /* Align to right */
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            /* Let clicks pass through */
+            font-family: "Poppins", sans-serif;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <header class="py-6">
+        <nav class="site-container site-nav">
+
+            <!-- LEFT: LOGO -->
+            <div class="flex items-center">
+                <a href="{% url 'auctions:home' %}" class="flex items-center gap-3">
+                    <h1 class="text-3xl brand-glow lowercase" style="font-family:'Poppins', sans-serif;">
+                        auctio
+                    </h1>
+                </a>
+            </div>
+
+            <!-- CENTER NAV LINKS -->
+            <div class="site-nav-center">
+                <a class="nav-item {% if request.resolver_match.url_name == 'listing' %}active{% endif %}"
+                    href="{% url 'auctions:listing' %}">LISTING</a>
+                <a class="nav-item {% if request.resolver_match.url_name == 'bids' %}active{% endif %}"
+                    href="{% url 'auctions:bids' %}">BIDS</a>
+                <a class="nav-item {% if request.resolver_match.url_name == 'vendue' %}active{% endif %}"
+                    href="{% url 'auctions:vendue' %}">VENDUE</a>
+                <a class="nav-item {% if request.resolver_match.url_name == 'alerts' %}active{% endif %}"
+                    href="{% url 'auctions:alerts' %}">ALERTS</a>
+            </div>
+
+            <!-- RIGHT: ACCOUNT -->
+            <div class="flex justify-end items-center">
+                {% if user.is_authenticated %}
+                <a href="{% url 'auctions:account' %}" class="fa-user-wrapper" aria-label="Account">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+                {% else %}
+                <a href="{% if request.resolver_match.url_name == 'register' %}{% url 'auctions:register' %}{% else %}{% url 'auctions:login' %}{% endif %}"
+                    class="px-5 py-2 rounded bg-gradient-to-r from-[#8b5cf6] to-[#a855f7] text-white font-bebas tracking-wide text-lg hover:shadow-lg transition transform hover:-translate-y-px">
+                    {% if request.resolver_match.url_name == 'register' %}REGISTER{% else %}LOGIN{% endif %}
+                </a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Content -->
+    <main class="site-container mt-10">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Landing Page Footer Only -->
+    {% block landing_footer %}{% endblock %}
+
+    <footer class="site-footer"></footer>
+
+    <script src="{% static 'auctions/js/parallax.js' %}"></script>
+    <script src="{% static 'auctions/js/websocket.js' %}"></script>
+</body>
+
+</html>

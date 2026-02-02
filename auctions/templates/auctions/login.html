@@ -1,0 +1,23 @@
+<!-- auctions/templates/auctions/login.html -->
+{% extends 'auctions/base.html' %}
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center">
+  <div class="w-full max-w-md p-10 glass-form-container">
+    <h2 class="text-4xl font-extrabold text-center brand-glow mb-8">auctio</h2>
+    <form action="{% url 'auctions:login' %}" method="post">
+      {% csrf_token %}
+      <div class="space-y-5">
+        <input name="username" class="w-full glass-input" placeholder="Username" />
+        <input name="password" type="password" class="w-full glass-input" placeholder="Password" />
+      </div>
+      <button class="w-full mt-8 glass-button font-bebas tracking-wide text-2xl uppercase">
+        LOGIN
+      </button>
+    </form>
+    <div class="text-center mt-6">
+      <a href="{% url 'auctions:register' %}"
+        class="text-sm font-normal text-purple-300/80 hover:text-white transition">Register</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!-- auctions/templates/auctions/register.html -->
+{% extends 'auctions/base.html' %}
+{% block content %}
+<div class="min-h-[60vh] flex items-center justify-center">
+  <div class="w-full max-w-md p-10 glass-form-container">
+    <h2 class="text-4xl font-extrabold text-center brand-glow mb-8">auctio</h2>
+    <form method="post" enctype="multipart/form-data" class="space-y-5">
+      {% csrf_token %}
+      <!-- Username -->
+      <div class="w-full">
+        {{ form.username }}
+        {% if form.username.errors %}
+        <div class="text-red-400 text-xs mt-2 ml-1 font-medium">{{ form.username.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Email -->
+      <div class="w-full">
+        {{ form.email }}
+        {% if form.email.errors %}
+        <div class="text-red-400 text-xs mt-2 ml-1 font-medium">{{ form.email.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Passwords Side-by-Side -->
+      <div class="password-row">
+        <div class="w-full">
+          {{ form.password1 }}
+          {% if form.password1.errors %}
+          <div class="text-red-400 text-xs mt-2 ml-1 font-medium">{{ form.password1.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <div class="w-full">
+          {{ form.password2 }}
+          {% if form.password2.errors %}
+          <div class="text-red-400 text-xs mt-2 ml-1 font-medium">{{ form.password2.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Avatar -->
+      <div class="w-full">
+        {{ form.avatar }}
+        {% if form.avatar.errors %}
+        <div class="text-red-400 text-xs mt-2 ml-1 font-medium">{{ form.avatar.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <button class="w-full mt-8 glass-button font-bebas tracking-wide text-2xl uppercase">
+        REGISTER
+      </button>
+    </form>
+
+    <div class="text-center mt-6">
+      <a href="{% url 'auctions:login' %}"
+        class="text-sm font-normal text-purple-300/80 hover:text-white transition">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

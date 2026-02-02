@@ -1,0 +1,16 @@
+<!-- auctions/templates/auctions/alerts.html -->
+{% extends 'auctions/base.html' %}
+{% block content %}
+<h2 class="text-xl font-bold mb-4">Alerts</h2>
+<div class="space-y-4">
+  {% for n in notifications %}
+  <div class="bg-white/5 backdrop-blur-md p-4 rounded">
+    <div class="font-semibold">From: Auctio</div>
+    <div class="text-sm text-gray-300">{{ n.message }}</div>
+    <div class="text-xs text-gray-500 mt-1">{{ n.created_at }}</div>
+  </div>
+  {% empty %}
+  <p>No alerts.</p>
+  {% endfor %}
+</div>
+{% endblock %}

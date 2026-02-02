@@ -1,0 +1,82 @@
+{% extends 'auctions/base.html' %}
+{% load static %}
+{% block content %}
+<div class="pt-6 max-w-4xl mx-auto">
+  {% if messages %}
+  <div class="mb-4">
+    {% for m in messages %}
+    <div class="px-4 py-2 rounded {% if m.tags %}bg-{{ m.tags }}-600{% else %}bg-white/6{% endif %} text-white">
+      {{ m }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="bg-white/5 backdrop-blur-md rounded-xl p-6 shadow-lg">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="col-span-1">
+        {% if auction.image %}
+        <img src="{{ auction.image.url }}" alt="{{ auction.title }}" class="w-full rounded-md object-cover shadow" />
+        {% else %}
+        <div
+          class="w-full h-64 rounded-md bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center text-gray-400">
+          No image
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="md:col-span-2">
+        <h1 class="text-3xl font-bold text-white">{{ auction.title }}</h1>
+        <div class="text-sm text-gray-400 mt-1">Category: {{ auction.category }}</div>
+        <p class="mt-4 text-gray-300">{{ auction.description }}</p>
+
+        <div class="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <div class="text-xs text-gray-400">Current</div>
+            <div class="text-2xl font-semibold text-white">₹{{ auction.current_bid }}</div>
+            <div class="text-xs text-gray-400 mt-1">Ends at: {{ auction.ends_at|date:"N j, Y, P" }}</div>
+            <div class="text-xs text-gray-400">Time remaining: {{ auction.time_remaining_seconds }}s</div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a href="#bid" class="px-4 py-2 rounded bg-purple-600 text-white">Place Bid</a>
+
+            {% if request.user.is_authenticated and request.user == auction.owner %}
+            <form method="post" action="{% url 'auctions:auction_delete' auction.pk %}"
+              onsubmit="return confirm('Remove this auction from listings?');">
+              {% csrf_token %}
+              <button type="submit" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">Remove
+                Auction</button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+
+        <div id="bid" class="mt-6">
+          {% if user.is_authenticated %}
+          <form method="post" action="{% url 'auctions:detail' auction.pk %}">
+            {% csrf_token %}
+            {% if request.user == auction.owner %}
+            <div class="p-4 rounded border border-purple-500/50 bg-purple-500/10 text-center">
+              <span class="text-purple-200 font-semibold">You created this auction</span>
+            </div>
+            {% else %}
+            <div class="flex gap-2 items-center">
+              <input name="amount" type="number" step="0.01" min="{{ auction.current_bid|floatformat:2 }}"
+                placeholder="Your bid (₹)" class="px-3 py-2 rounded glass-input w-48" required />
+              <button type="submit"
+                class="px-4 py-2 rounded bg-green-600 text-white transition hover:bg-green-700">Submit Bid</button>
+            </div>
+            {% endif %}
+          </form>
+          {% else %}
+          <p class="text-sm text-gray-300">Please <a href="{% url 'auctions:login' %}"
+              class="text-purple-400 underline">sign in</a> to place a bid.</p>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
